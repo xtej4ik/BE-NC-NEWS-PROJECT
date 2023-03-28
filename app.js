@@ -1,6 +1,6 @@
 const express = require('express')
 
-const { getTopics } = require("./controllers/topics.controllers")
+const { getTopics, getArticleById } = require("./controllers/topics.controllers")
 
 const app = express();
 
@@ -12,6 +12,7 @@ app.get('/api', (req, res) => {
 
 app.get('/api/topics', getTopics);
 
+app.get('/api/articles/:article_id', getArticleById);
 
 // to catch all wrong path
 app.all('/*', (req, res) => {
@@ -19,10 +20,16 @@ app.all('/*', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-    console.log(err);
-    res.status(500).send('Server Error!');
+    if (err.status === 404) {
+      res.status(404).send({ msg: err.msg });
+    } else if (err.status === 400) { 
+      res.status(400).send({ msg: err.msg });
+    } else {
+      console.error(err);
+      res.status(500).send('Server Error!');
+    }
   });
 
-  
+
 
 module.exports = app;
