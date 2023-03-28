@@ -13,19 +13,19 @@ beforeEach(() =>{
 });
 
 describe("GET/api/", () => {
-    it("GET 200: responds with a message saying the server is running.", () => {
+    it("GET 200: responds with a message saying the server is running", () => {
       return request(app)
         .get("/api")
         .expect(200)
         .then((res) => {
           const { body } = res;
           const { msg } = body;
-          expect(msg).toBe("Server is up and running.");
+          expect(msg).toBe("Server is up and running");
         });
     });
   });
   describe("GET/api/topics", () => {
-    it("GET 200: responds with all of the treasures.", () => {
+    it("GET 200: responds with all of the treasures", () => {
       return request(app)
         .get("/api/topics")
         .expect(200)
@@ -41,12 +41,14 @@ describe("GET/api/", () => {
           });
         });
     });
+  });
     describe('GET/not-a-route', () => {
-      it('responds with status 404', () => {
+      it('404: responds with an error', () => {
           return request(app)
           .get('/not-a-route')
-          .expect(404).send({ msg: 'Route not found' });
-
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe('Route not found');
+          });
       });
   });
-});
