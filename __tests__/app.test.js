@@ -45,7 +45,8 @@ describe("GET/api/", () => {
       it('responds with status 404', () => {
           return request(app)
           .get('/not-a-route')
-          .expect(404)
+          .expect(404).send({ msg: 'Route not found' });
+
       });
   });
 });
