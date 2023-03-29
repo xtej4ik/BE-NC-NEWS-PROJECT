@@ -24,7 +24,7 @@ describe("GET/api/", () => {
         });
     });
   });
-  describe("GET/api/topics", () => {
+describe("GET/api/topics", () => {
     it("GET 200: responds with all of the treasures", () => {
       return request(app)
         .get("/api/topics")
@@ -42,7 +42,7 @@ describe("GET/api/", () => {
         });
     });
   });
-    describe('GET/not-a-route', () => {
+describe('GET/not-a-route', () => {
       it('404: responds with an error', () => {
           return request(app)
           .get('/not-a-route')
@@ -52,7 +52,7 @@ describe("GET/api/", () => {
           });
       });
   });
-  describe('GET/api/articles/:article_id', () => {
+describe('GET/api/articles/:article_id', () => {
     it('200: responds with requested article', () => {
         const articleId = 1;
         return request(app)
