@@ -26,7 +26,7 @@ exports.fetchArticleById = (article_id) => {
     AS comment_count
     FROM articles
     ORDER BY created_at DESC;
-    `)
+    `,)
     .then((result) => {
       if (result.length === 0) {
         return Promise.reject({ status: 404, msg: 'No articles found' });

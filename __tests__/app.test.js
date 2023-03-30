@@ -61,14 +61,16 @@ describe("GET/not-a-route", () => {
         .then((res) => {
           const { body } = res;
           const { article } = body;
-          expect(article).toHaveProperty('author', expect.any(String));
-            expect(article).toHaveProperty('title', expect.any(String));
-            expect(article).toHaveProperty('article_id', articleId);
-            expect(article).toHaveProperty('body', expect.any(String));
-            expect(article).toHaveProperty('topic', expect.any(String));
-            expect(article).toHaveProperty('created_at', expect.any(String));
-            expect(article).toHaveProperty('votes', expect.any(Number));
-            expect(article).toHaveProperty('article_img_url', expect.any(String));
+          expect(article).toEqual(expect.objectContaining({
+            author: expect.any(String),
+            title: expect.any(String),
+            article_id: articleId,
+            body: expect.any(String),
+            topic: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            article_img_url: expect.any(String)
+          }));
           });
     });
     it("404: responds with an error if article_id is not found", () => {
