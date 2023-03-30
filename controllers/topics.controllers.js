@@ -1,4 +1,4 @@
-const { fetchTopics, fetchArticleById, fetchAllArticles } = require("../models/topics.models");
+const { fetchTopics, fetchArticleById, fetchAllArticles, fetchComments } = require("../models/topics.models");
 
 exports.getTopics = (req, res, next) => {
   fetchTopics()
@@ -9,7 +9,7 @@ exports.getTopics = (req, res, next) => {
 exports.getArticleById = (req, res, next) => {
   const { article_id } = req.params;
   if (isNaN(article_id)) {
-    return next({ status: 400, msg: 'Invalid id' });
+    return next({ status: 400, msg: 'Invalid article ID' });
   }
   
   fetchArticleById(article_id)
@@ -27,3 +27,19 @@ exports.getAllArticles = (req, res, next) => {
     })
     .catch(next);
 }
+
+exports.getComments = (req, res, next) => {
+  const { article_id } = req.params;
+
+  if (isNaN(article_id)) {
+    return next({ status: 400, msg: 'Invalid article ID' });
+  }
+
+  fetchComments(article_id)
+    .then((comments) => {
+      res.status(200).send({ comments });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
