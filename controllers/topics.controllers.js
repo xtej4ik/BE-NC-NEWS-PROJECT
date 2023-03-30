@@ -23,10 +23,7 @@ exports.getAllArticles = (req, res, next) => {
 
   fetchAllArticles()
     .then((articles) => {
-      const newArticles = articles.map(x => Object.assign({}, x, {
-        comment_count: parseInt(x.comment_count) //Object.assign because could not use spread operator
-      }));
-      res.status(200).send(newArticles);
+      res.status(200).send({ articles });
     })
     .catch(next);
 }

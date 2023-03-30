@@ -98,9 +98,8 @@ describe("GET/not-a-route", () => {
       .expect(200)
       .then((res) => {
         const { body } = res;
-        const articles = body;
-          expect(Array.isArray(articles)).toBe(true);
-          expect(articles.length).toBeGreaterThan(0);
+        const { articles } = body;
+          expect(articles.length).toBe(data.articleData.length);
           articles.forEach((article) => {
             expect(article).toHaveProperty("author", expect.any(String));
             expect(article).toHaveProperty("title", expect.any(String));
