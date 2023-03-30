@@ -3,6 +3,7 @@ const db = require("../db/connection");
 const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const data = require("../db/data/test-data");
+require('jest-sorted');
 
 afterAll(() => {
     if (db.end) db.end()
@@ -132,14 +133,14 @@ describe("GET /api/articles/:article_id/comments", () => {
                     expect(comment).toHaveProperty("body", expect.any(String));
                     expect(comment).toHaveProperty("article_id", expect.any(Number));
                 });
-                const sortedComments = comments.sort((a, b) => a.created_at >= b.created_at ? 1 : -1);
-                expect(comments).toEqual(sortedComments)
+                expect(comments).toBeSortedBy("created_at", { descending: true });
+              
             });
     });
     it("404: responds with an error if article_id is not found", () => {
         const articleId = 0;
         return request(app)
-            .get(`/api/articles/${articleId}`)
+            .get(`/api/articles/${articleId}/comments`)
             .expect(404)
             .then((res) => {
                 const { body } = res;
@@ -149,7 +150,7 @@ describe("GET /api/articles/:article_id/comments", () => {
     it("400: responds with an error if article_id is not a number", () => {
         const articleId = 'not_a_number';
         return request(app)
-            .get(`/api/articles/${articleId}`)
+            .get(`/api/articles/${articleId}/comments`)
             .expect(400)
             .then((res) => {
                 const { body } = res;

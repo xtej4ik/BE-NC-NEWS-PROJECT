@@ -35,7 +35,7 @@ exports.fetchArticleById = (article_id) => {
       return result.rows;
     });
   };
-  
+
   exports.fetchComments = (article_id) => {
     const sql = `
     SELECT comments.*
