@@ -52,7 +52,7 @@ describe("GET/not-a-route", () => {
           });
       });
     });
-    describe("GET/api/articles/:article_id", () => {
+describe("GET/api/articles/:article_id", () => {
       it("200: responds with requested article", () => {
         const articleId = 1;
         return request(app)
@@ -91,7 +91,7 @@ describe("GET/not-a-route", () => {
       });
     });
   });
-  describe("GET/api/articles", () => {
+describe("GET/api/articles", () => {
     it("200: responds with array of articles", () => {
       return request(app)
       .get("/api/articles")
@@ -132,6 +132,8 @@ describe("GET /api/articles/:article_id/comments", () => {
                     expect(comment).toHaveProperty("body", expect.any(String));
                     expect(comment).toHaveProperty("article_id", expect.any(Number));
                 });
+                const sortedComments = comments.sort((a, b) => a.created_at >= b.created_at ? 1 : -1);
+                expect(comments).toEqual(sortedComments)
             });
     });
     it("404: responds with an error if article_id is not found", () => {
