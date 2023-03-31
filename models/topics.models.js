@@ -111,3 +111,10 @@ exports.fetchArticleById = (article_id) => {
         return result.rows[0];
       });
   };
+
+  exports.fetchAllUsers = () => {
+    return db.query(`SELECT * FROM users`)
+    .then((result) => {
+      return result.rows;
+    });
+};

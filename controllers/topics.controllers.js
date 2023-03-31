@@ -5,7 +5,8 @@ const {
   fetchComments,
   addNewComment,
   incrementArticleVotes,
-  deleteCommentById
+  deleteCommentById,
+  fetchAllUsers
 } = require("../models/topics.models");
 
 exports.getTopics = (req, res, next) => {
@@ -101,3 +102,9 @@ exports.removeComment = (req, res, next) => {
       next(err);
     });
 };
+
+exports.getAllUsers = (req, res, next) => {
+  fetchAllUsers().then((users) => {
+      res.status(200).send({ users })
+  });
+}

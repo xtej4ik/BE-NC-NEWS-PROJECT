@@ -24,7 +24,7 @@ describe("GET/api/", () => {
           expect(msg).toBe("Server is up and running");
         });
     });
-  });
+});
 describe("GET/api/topics", () => {
     it("GET 200: responds with all of the treasures", () => {
       return request(app)
@@ -42,7 +42,7 @@ describe("GET/api/topics", () => {
           });
         });
     });
-  });
+});
 describe("GET/not-a-route", () => {
   it("404: responds with an error", () => {
     return request(app)
@@ -52,7 +52,7 @@ describe("GET/not-a-route", () => {
             expect(body.msg).toBe('Route not found');
           });
       });
-    });
+});
 describe("GET/api/articles/:article_id", () => {
       it("200: responds with requested article", () => {
         const articleId = 1;
@@ -91,7 +91,7 @@ describe("GET/api/articles/:article_id", () => {
         expect(body.msg).toBe('Invalid article ID')
       });
     });
-  });
+});
 describe("GET/api/articles", () => {
     it("200: responds with array of articles", () => {
       return request(app)
@@ -114,7 +114,7 @@ describe("GET/api/articles", () => {
           });
         });
       });  
-    });
+});
 describe("GET /api/articles/:article_id/comments", () => {
     it("responds with an array of comments for the given article_id of which each comment should have the correct properties", () => {
         const articleId = 1
@@ -403,5 +403,22 @@ describe("DELETE /api/comments/:comment_id", () => {
       .then((res) => {
         expect(res.body.msg).toBe('Comment not found');
       });
+  });
+});
+describe("GET /api/users", () => {
+  it("GET 200: responds with an array of all users", () => {
+      return request(app)
+          .get('/api/users')
+          .expect(200)
+          .then((res) => {
+              const {body} = res;
+              const {users} = body;
+              expect(users).toHaveLength(data.userData.length);
+              users.forEach(user => {
+                  expect(user).toHaveProperty('username', expect.any(String));
+                  expect(user).toHaveProperty('name', expect.any(String));
+                  expect(user).toHaveProperty('avatar_url', expect.any(String));
+              });
+          });
   });
 });

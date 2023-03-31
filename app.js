@@ -7,7 +7,8 @@ const {
      getComments,
      postComments,
      updateArticle,
-    removeComment } = require("./controllers/topics.controllers")
+     removeComment,
+     getAllUsers } = require("./controllers/topics.controllers")
 
 const app = express();
 
@@ -30,6 +31,8 @@ app.post('/api/articles/:article_id/comments', postComments);
 app.patch('/api/articles/:article_id', updateArticle);
 
 app.delete('/api/comments/:comment_id', removeComment);
+
+app.get('/api/users', getAllUsers);
 
 // to catch all wrong path
 app.all('/*', (req, res) => {
