@@ -48,3 +48,29 @@ exports.fetchArticleById = (article_id) => {
       return result.rows;
     });
   };
+
+  exports.addNewComment = (commentAdd) => {
+    const { username, body, article_id } = commentAdd;
+  
+    return db
+      .query(`SELECT * FROM users WHERE username = $1`, [username])
+      .then((result) => {
+        if (result.rows.length === 0) {
+          return Promise.reject({ status: 400, msg: 'Invalid username' });
+        }
+  
+        const arrayValue = [username, body, article_id];
+        const sql = `
+          INSERT INTO comments
+          (author, body, article_id)
+          VALUES
+          ($1, $2, $3)
+          RETURNING *;
+        `;
+        return db.query(sql, arrayValue);
+      })
+      .then(({ rows }) => {
+        const commentAdded = rows[0];
+        return commentAdded;
+      });
+  };
