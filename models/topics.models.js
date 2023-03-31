@@ -74,3 +74,25 @@ exports.fetchArticleById = (article_id) => {
         return commentAdded;
       });
   };
+
+  exports.incrementArticleVotes = (article_id, inc) => {
+
+    if (isNaN(inc)) {
+      return Promise.reject({ status: 400, msg: 'Invalid vote value' });
+    }
+
+    const sql = `
+      UPDATE articles
+      SET votes = votes + $2
+      WHERE article_id = $1
+      RETURNING *;
+    `;
+  
+    return db.query(sql, [article_id, inc])
+      .then(({ rows }) => {
+        if(rows.length === 0) {
+          return Promise.reject({ status: 404, msg: 'Article not found' });
+        }
+        return rows[0];
+      });
+  };
