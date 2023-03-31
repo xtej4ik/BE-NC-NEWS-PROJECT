@@ -284,3 +284,80 @@ describe("POST /api/articles/:article_id/comments", () => {
   });
 
 });
+describe("PATCH /api/articles/:article_id", () => {
+  it("200: increase article vote property by the given amount", () => {
+    const articleID = 1
+    return request(app)
+    .patch(`/api/articles/${articleID}`)
+    .send({ inc_votes: 1 })
+    .expect(200)
+    .then((res) => {
+        expect(res.body.article.votes).toBe(101);
+    });
+  })
+  it("200: decrease article vote property by the given amount", () => {
+    const articleID = 1
+    return request(app)
+    .patch(`/api/articles/${articleID}`)
+    .send({ inc_votes: -1 })
+    .expect(200)
+    .then((res) => {
+        expect(res.body.article.votes).toBe(99);
+    });
+  });
+  it("200: returns article with no changes if increment or decrement is 0", () => {
+    const articleId = 1;
+    const votes = data.articleData[0].votes;
+    return request(app)
+      .patch(`/api/articles/${articleId}`)
+      .send({inc_votes: 0})
+      .expect(200)
+      .then((res) => {
+        expect(res.body.article.votes).toBe(votes);
+    });
+  });
+  it("200: responds with updated article", () => {
+  const articleId = 1;
+  return request(app)
+    .patch(`/api/articles/${articleId}`)
+    .send({ inc_votes: 10 })
+    .expect(200)
+    .then((res) => {
+      const expectedKeys = [
+        'article_id',
+         'title', 
+         'body', 
+         'votes', 
+         'topic', 
+         'author',
+          'created_at'
+        ];
+      expect(Object.keys(res.body.article)).toEqual(expect.arrayContaining(expectedKeys));
+      expect(res.body.article.votes).toBe(110);
+    });
+  });
+  it("404: responds with an error if article_id is invalid", () => {
+    const articleID = 0;
+      return request(app)
+          .patch(`/api/articles/${articleID}`)
+          .send({ inc_votes: 1 })
+          .expect(404)
+          .then((res) => {
+              const { body } = res;
+              expect(body.msg).toBe('Article not found');
+          });
+  });
+  it("400: responds with an error for invalid vote value", () => {
+    const articleId = 1;
+    const inc = 'not-a-num';
+    return request(app)
+      .patch(`/api/articles/${articleId}`)
+      .send({ inc_votes: inc })
+      .expect(400)
+      .then((res) => {
+        const { body } = res;
+        expect(body.msg).toBe('Invalid vote value');
+    });
+  });
+
+});

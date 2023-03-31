@@ -5,7 +5,8 @@ const {
      getArticleById,
      getAllArticles,
      getComments,
-     postComments } = require("./controllers/topics.controllers")
+     postComments,
+     updateArticle } = require("./controllers/topics.controllers")
 
 const app = express();
 
@@ -24,6 +25,8 @@ app.get('/api/articles', getAllArticles);
 app.get('/api/articles/:article_id/comments', getComments);
 
 app.post('/api/articles/:article_id/comments', postComments);
+
+app.patch('/api/articles/:article_id', updateArticle)
 
 // to catch all wrong path
 app.all('/*', (req, res) => {
