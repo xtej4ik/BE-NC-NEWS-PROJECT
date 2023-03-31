@@ -76,10 +76,11 @@ exports.fetchArticleById = (article_id) => {
   };
 
   exports.incrementArticleVotes = (article_id, inc) => {
+
     if (isNaN(inc)) {
       return Promise.reject({ status: 400, msg: 'Invalid vote value' });
     }
-    
+
     const sql = `
       UPDATE articles
       SET votes = votes + $2

@@ -359,5 +359,16 @@ describe("PATCH /api/articles/:article_id", () => {
         expect(body.msg).toBe('Invalid vote value');
     });
   });
+  it("400: responds with an error for missing body", () => {
+    const articleId = 1;
+    return request(app)
+      .patch(`/api/articles/${articleId}`)
+      .send({})
+      .expect(400)
+      .then((res) => {
+        const { body } = res;
+        expect(body.msg).toBe('Invalid vote value');
+      });
+  });
 
 });
