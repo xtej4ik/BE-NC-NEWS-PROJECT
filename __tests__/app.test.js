@@ -372,3 +372,36 @@ describe("PATCH /api/articles/:article_id", () => {
   });
 
 });
+describe("DELETE /api/comments/:comment_id", () => {
+  it("should delete the given comment by its ID", () => {
+    const comment_id = 1;
+    return request(app)
+      .delete(`/api/comments/${comment_id}`)
+      .expect(204)
+      .then(() => {
+        return request(app)
+          .get(`/api/comments/${comment_id}`)
+          .expect(404)
+      });
+  });
+
+  it("400: should respond with an error if the comment_id is not a number", () => {
+    const comment_id = 'not_a_number';
+    return request(app)
+      .delete(`/api/comments/${comment_id}`)
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe('Invalid comment ID');
+      });
+  });
+
+  it("404: should respond with an error if the comment with the given ID is not found", () => {
+    const comment_id = 0;
+    return request(app)
+      .delete(`/api/comments/${comment_id}`)
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe('Comment not found');
+      });
+  });
+});
