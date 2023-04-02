@@ -18,16 +18,38 @@ exports.fetchArticleById = (article_id) => {
       });
   };
 
-  exports.fetchAllArticles = () => { 
-    return db.query
-    (`
+  exports.fetchAllArticles = (topic, sort_by, order) => { 
+    if(!sort_by) {
+      sort_by = "created_at";
+    }
+
+    if(!order) {
+      order = "desc";
+    }
+
+    if(!['article_id', 'title', 'topic', 'author', 'body', 'created_at', 'votes', 'article_img_url']
+    .includes(sort_by)) {
+      return Promise.reject({ status: 400, msg: 'Invalid sort_by column' });
+    } else if(order !== "asc" && order !== "desc") {
+      return Promise.reject({ status: 400, msg: 'Invalid sort order' });
+    }
+
+    const parameters = []
+    let sql = `
     SELECT articles.*, 
     COUNT(comments.comment_id) ::INT AS comment_count
     FROM articles
-    LEFT JOIN comments ON articles.article_id = comments.article_id
-    GROUP BY articles.article_id
-    ORDER BY created_at DESC;
-    `,)
+    LEFT JOIN comments ON articles.article_id = comments.article_id`
+
+    if(topic) {
+      sql += ` WHERE articles.topic = $1`
+      parameters.push(topic)
+    }
+  
+    sql += ` GROUP BY articles.article_id
+    ORDER BY ${sort_by} ${order.toUpperCase()};`
+
+    return db.query(sql, parameters)
     .then((result) => {
       if (result.length === 0) {
         return Promise.reject({ status: 404, msg: 'No articles found' });
