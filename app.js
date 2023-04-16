@@ -1,4 +1,6 @@
 const express = require('express')
+const fs = require('fs');
+const { send } = require("process");
 
 const { 
      getTopics,
@@ -15,7 +17,11 @@ const app = express();
 app.use(express.json())
 
 app.get('/api', (req, res) => {
-    res.status(200).send({msg: 'Server is up and running'})
+  fs.readFile('endpoints.json', 'utf8', (err, data) => {
+    send(data);
+  })
+    res.status(200).send({ msg: "Server is up and running" })
+    
 });
 
 app.get('/api/topics', getTopics);

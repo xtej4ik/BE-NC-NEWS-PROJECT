@@ -12,3 +12,4 @@ Your first job will be add files in order to successfully connect to the two dat
 With these environment variables set up, you should be able to run the project locally and connect to the two databases.
 
 >**Hint**: Make sure to add this files to your "gitignore" file as this ensures that sensitive information like passwords and host URLs are not accidentally exposed.
+

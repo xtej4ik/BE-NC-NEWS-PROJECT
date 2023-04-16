@@ -26,7 +26,7 @@ describe("GET/api/", () => {
   });
 });
 describe("GET/api/topics", () => {
-  it("GET 200: responds with all of the treasures", () => {
+  it("GET 200: responds with all of the topics", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
@@ -172,39 +172,39 @@ describe("GET/api/articles", () => {
         expect(msg).toBe("Invalid sort_by column");
       });
   });
-});
-it("200: sort order asc", () => {
-  return request(app)
-    .get(`/api/articles?order=asc`)
-    .expect(200)
-    .then((res) => {
-      const { body } = res;
-      const { articles } = body;
-      expect(articles.length).toBe(data.articleData.length);
-      articles.forEach((article) => {
-        expect(article).toHaveProperty("author", expect.any(String));
-        expect(article).toHaveProperty("title", expect.any(String));
-        expect(article).toHaveProperty("article_id", expect.any(Number));
-        expect(article).toHaveProperty("body", expect.any(String));
-        expect(article).toHaveProperty("topic", expect.any(String));
-        expect(article).toHaveProperty("created_at", expect.any(String));
-        expect(article).toHaveProperty("votes", expect.any(Number));
-        expect(article).toHaveProperty("article_img_url", expect.any(String));
-        expect(article).toHaveProperty("comment_count", expect.any(Number));
+  it("200: sort order asc", () => {
+    return request(app)
+      .get(`/api/articles?order=asc`)
+      .expect(200)
+      .then((res) => {
+        const { body } = res;
+        const { articles } = body;
+        expect(articles.length).toBe(data.articleData.length);
+        articles.forEach((article) => {
+          expect(article).toHaveProperty("author", expect.any(String));
+          expect(article).toHaveProperty("title", expect.any(String));
+          expect(article).toHaveProperty("article_id", expect.any(Number));
+          expect(article).toHaveProperty("body", expect.any(String));
+          expect(article).toHaveProperty("topic", expect.any(String));
+          expect(article).toHaveProperty("created_at", expect.any(String));
+          expect(article).toHaveProperty("votes", expect.any(Number));
+          expect(article).toHaveProperty("article_img_url", expect.any(String));
+          expect(article).toHaveProperty("comment_count", expect.any(Number));
+        });
+  
+        expect(articles).toBeSortedBy("created_at", { descending: false });
       });
-
-      expect(articles).toBeSortedBy("created_at", { descending: false });
-    });
-});
-it("400: sort order invalid", () => {
-  return request(app)
-    .get(`/api/articles?order=bla`)
-    .expect(400)
-    .then((res) => {
-      const { body } = res;
-      const { msg } = body;
-      expect(msg).toBe("Invalid sort order");
-    });
+  });
+  it("400: sort order invalid", () => {
+    return request(app)
+      .get(`/api/articles?order=bla`)
+      .expect(400)
+      .then((res) => {
+        const { body } = res;
+        const { msg } = body;
+        expect(msg).toBe("Invalid sort order");
+      });
+  });
 });
 describe("GET /api/articles/:article_id/comments", () => {
   it("responds with an array of comments for the given article_id of which each comment should have the correct properties", () => {
