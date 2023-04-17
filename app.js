@@ -2,6 +2,9 @@ const express = require('express')
 const fs = require('fs');
 const { send } = require("process");
 
+const cors = require('cors');
+app.use(cors());
+
 const { 
      getTopics,
      getArticleById,
