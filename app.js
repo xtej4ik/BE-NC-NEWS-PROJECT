@@ -1,9 +1,13 @@
 const express = require('express')
-const fs = require('fs');
-const { send } = require("process");
+const app = express();
 
 const cors = require('cors');
 app.use(cors());
+
+
+const fs = require('fs');
+const { send } = require("process");
+
 
 const { 
      getTopics,
@@ -15,7 +19,6 @@ const {
      removeComment,
      getAllUsers } = require("./controllers/topics.controllers")
 
-const app = express();
 
 app.use(express.json())
 
