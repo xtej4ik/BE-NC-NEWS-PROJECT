@@ -4,6 +4,7 @@ const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const data = require("../db/data/test-data");
 require("jest-sorted");
+const endpointsJSON = require("./../endpoints.json");
 
 afterAll(() => {
   if (db.end) db.end();
@@ -14,14 +15,13 @@ beforeEach(() => {
 });
 
 describe("GET/api/", () => {
-  it("GET 200: responds with a message saying the server is running", () => {
+  it("GET 200: responds with a JSON object representing all available endpoints", () => {
     return request(app)
       .get("/api")
       .expect(200)
       .then((res) => {
         const { body } = res;
-        const { msg } = body;
-        expect(msg).toBe("Server is up and running");
+        expect(body).toEqual(endpointsJSON);
       });
   });
 });

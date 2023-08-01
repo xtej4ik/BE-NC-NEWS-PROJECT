@@ -5,8 +5,8 @@ const cors = require('cors');
 app.use(cors());
 
 
-const fs = require('fs');
-const { send } = require("process");
+const fs = require('fs').promises;
+
 
 
 const { 
@@ -23,11 +23,12 @@ const {
 app.use(express.json())
 
 app.get('/api', (req, res) => {
-  fs.readFile('endpoints.json', 'utf8', (err, data) => {
-    send(data);
+  return fs
+  .readFile(`${__dirname}/endpoints.json`, 'utf8')
+  .then((data) => {
+    const parsedData = JSON.parse(data)
+    res.status(200).send(parsedData)
   })
-    res.status(200).send({ msg: "Server is up and running" })
-    
 });
 
 app.get('/api/topics', getTopics);
