@@ -32,13 +32,13 @@ Endpoints
 
 ##### The API has the following endpoints:
 
-GET /api/topics: Retrieve a list of topics 
-GET /api/articles: Retrieve a list of articles 
-GET /api/articles/:article_id: Retrieve an article by its ID 
-GET /api/articles/:article_id/comments: Retrieve a list of comments for an article 
-POST /api/articles/:article_id/comments: Post a new comment to an article 
-PATCH /api/articles/:article_id: Update an article's vote count 
-DELETE /api/comments/:comment_id: Delete a comment
+- GET /api/topics: Retrieve a list of topics 
+- GET /api/articles: Retrieve a list of articles 
+- GET /api/articles/:article_id: Retrieve an article by its ID 
+- GET /api/articles/:article_id/comments: Retrieve a list of comments for an article 
+- POST /api/articles/:article_id/comments: Post a new comment to an article 
+- PATCH /api/articles/:article_id: Update an article's vote count 
+- DELETE /api/comments/:comment_id: Delete a comment
 
 Each endpoint has been designed to handle various possible errors and send appropriate HTTP status codes to the client.
 
